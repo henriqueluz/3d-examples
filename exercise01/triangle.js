@@ -12,7 +12,7 @@ Triangle.prototype.draw = function(color) {
 	this.geometry.vertices.push(this.c);
 	this.geometry.faces.push(this.face);
 	var triangle = new THREE.Mesh(this.geometry, new THREE.MeshBasicMaterial({color : color}));
-	
+
 	scene.add(triangle);
 	camera.position.z = 20;
 	renderer.render(scene, camera);
