@@ -18,12 +18,14 @@ function render() {
 	
 	var triangle = new Triangle(triangleVertex);
 	var square = new Square(squareVertex);
-	
-	triangle.draw(WHITE);
-	triangle.translateX(-12.5);
-	triangle.translateY(-5.0);
+	var circle = new Circle(4, 36);
 	
 	square.draw(BLUE);
+	triangle.draw(WHITE);
+	circle.draw(GREEN);
+	
+	triangle.translateX(-12.5);
+	triangle.translateY(-5.0);
 	
 	camera.position.z = 40;
 	renderer.render(scene, camera);
