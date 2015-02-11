@@ -11,8 +11,9 @@ function render() {
 		color : RED
 	});
 	var cube = new THREE.Mesh(cubeGeometry, material);
-	var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-	var light = new THREE.SpotLight(0xffff00);
+
+	var ambientLight = new THREE.AmbientLight(0x0c0c0c);
+	var spotLight = new THREE.SpotLight(0xffff00);
 
 	cube.position.x = -10;
 	cube.rotation.x = 5;
@@ -21,11 +22,12 @@ function render() {
 	sphere.position.x = 10;
 	sphere.rotation.z = -10;
 	
-	light.position.set(-20, 60, 60);
+	spotLight.position.set(-20, 60, 60);
 
 	scene.add(cube);
 	scene.add(sphere);
-	scene.add(light);
+	scene.add(ambientLight);
+	scene.add(spotLight);
 
 	camera.position.z = 40;
 	renderer.render(scene, camera);
