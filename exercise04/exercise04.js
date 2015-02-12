@@ -2,7 +2,7 @@ function render() {
 	renderer.setSize(width, height);
 	document.body.appendChild(renderer.domElement);
 
-	var cubeGeometry = new THREE.BoxGeometry(8, 8, 8, 4, 4, 4);
+	var cubeGeometry = new THREE.BoxGeometry(8, 8, 8);
 	var sphereGeometry = new THREE.SphereGeometry(5, 8, 8);
 	var material = new THREE.MeshPhongMaterial({
 		color : GREEN,
