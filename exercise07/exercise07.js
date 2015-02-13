@@ -19,7 +19,6 @@ function render() {
 	});
 	var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 	var light = new THREE.SpotLight(WHITE);
-	var anotherLight = new THREE.SpotLight(SILVER, 2);
 
 	sphere.castShadow = true;
 	sphere.position.set(0, 10, -15);
@@ -31,15 +30,13 @@ function render() {
 	light.target = sphere;
 	light.position.set(0, -10, 90);
 	light.castShadow =  true;
-	light.shadowCameraVisible = true;
+	//light.shadowCameraVisible = true;
 	light.shadowCameraFar = 150;
 	light.shadowCameraFov = 30;
-	anotherLight.position.set(20, -60, -60);
 
 	scene.add(light);
 	scene.add(sphere);
 	scene.add(plane);
-	//scene.add(anotherLight);
 
 	camera.position.z = 100;
 	renderer.render(scene, camera);
