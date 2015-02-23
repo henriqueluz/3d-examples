@@ -1,4 +1,4 @@
-var width = height = 500;
+var width = height = 600;
 var container = document.getElementById("container");
 var scene = new THREE.Scene();
 var renderer = new THREE.WebGLRenderer();
@@ -14,3 +14,4 @@ var WHITE = 0xffffff;
 var BLUE = 0x0000ff;
 var YELLOW = 0x00ffff;
 var SILVER = 0xcccccc;
+var intersected;
