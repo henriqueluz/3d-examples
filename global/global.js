@@ -17,14 +17,13 @@ var YELLOW = 0x00ffff;
 var SILVER = 0xcccccc;
 var BLACK = 0x000000;
 var LIGHT_YELLOW = 0xeeeedd;
-
+var selectedPlane;
 var intersected;
 var selected;
 var offset = new THREE.Vector3();
 
 var coordX = document.getElementById("coordX");
 var coordY = document.getElementById("coordY");
-
 
 var bedGeometry = new THREE.BoxGeometry(100, 100, 100);
 var bedMaterial = new THREE.MeshBasicMaterial({wireframe: true});
@@ -40,11 +39,19 @@ var angle = 90*Math.PI/180;
 floor.position.set(0, -50, 0);
 floor.rotation.set(angle, 0, 0);
 
+var planeGeometry = new THREE.PlaneBufferGeometry(100, 100);
+var planeMaterial = new THREE.MeshBasicMaterial({ color: GREEN, opacity: 0.25, transparent: true, side: THREE.DoubleSide});
 
-
-var planeX = new THREE.Mesh(
-		new THREE.PlaneBufferGeometry( 100, 100, 8, 8 ),
-		new THREE.MeshBasicMaterial({ color: 0x000000, opacity: 0.25, transparent: true, side: THREE.DoubleSide})
-	);
-planeX.rotation.set(0, 0, angle);
+var planeX = new THREE.Mesh(planeGeometry, planeMaterial);
+var planeY = planeX.clone();
+var planeZ = planeX.clone();
+planeX.name = "x";
+planeY.name = "y";
+planeZ.name = "z";
 planeX.visible = false;
+planeY.visible = false;
+planeZ.visible = false;
+planeX.rotation.set(angle, 0, 0);
+planeY.rotation.set(0, angle, 0);
+planeZ.rotation.set(0, 0, angle);
+selectedPlane = planeX;

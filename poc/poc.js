@@ -33,6 +33,8 @@ function init() {
 	scene.add(BED);
 	scene.add(floor);
 	scene.add(planeX);
+	scene.add(planeY);
+	scene.add(planeZ);
 	
 	var axis =  new Axis();
 	axis.build();
@@ -49,18 +51,14 @@ function init() {
 	animate();
 	
 	var objects = [cube, sphere];
-	
 	function onMouseMove(e) {
 		e.preventDefault();
 		
 		mouse.x = 2 * (e.clientX / containerWidth) - 1;
 		mouse.y = 1 - 2 * (e.clientY / containerHeight);
 		
-		coordX.innerHTML = mouse.x;
-		coordY.innerHTML = mouse.y;
-		
 		if(selected) {
-			var intersects = raycaster.intersectObject(planeX);
+			var intersects = raycaster.intersectObject(selectedPlane);
 			var object = intersects[0];
 			selected.position.copy(object.point);
 			return;
@@ -75,9 +73,6 @@ function init() {
 				}
 				intersected = intersects[0].object;
 				intersected.currentHex = intersected.material.color.getHex();
-
-				//planeX.position.copy(intersected.position);
-				//planeX.lookAt(camera.position);
 			}
 			container.style.cursor = 'pointer';
 
@@ -98,12 +93,26 @@ function init() {
 		var intersects = raycaster.intersectObjects( objects );
 
 		if (intersects.length > 0) {
-
 			controls.enabled = false;
 			selected = intersects[0].object;
+			
+			if(selectedPlane.name === "x") {
+				planeY.visible = false;
+				planeZ.visible = false;
+				selectedPlane.position.y = selected.position.y;
+			} else if(selectedPlane.name === "y") {
+				planeX.visible = false;
+				planeZ.visible = false;
+				selectedPlane.position.x = selected.position.x;
+			} else if(selectedPlane.name == "z") {
+				planeX.visible = false;
+				planeY.visible = false;
+				selectedPlane.position.z = selected.position.z;
+			}
 
-			var intersects = raycaster.intersectObject(planeX);
-			offset.copy(intersects[0].point).sub(planeX.position);
+			selectedPlane.visible = true;
+			var intersects = raycaster.intersectObject(selectedPlane);
+			offset.copy(intersects[0].point).sub(selectedPlane.position);
 
 			container.style.cursor = 'move';
 		}
@@ -114,9 +123,9 @@ function init() {
 		controls.enabled = true;
 
 		if (intersected) {
-			//planeX.position.copy(intersected.position);
 			selected = null;
 		}
+		selectedPlane.visible = false;
 		container.style.cursor = 'auto';
 	}
 	
@@ -139,11 +148,8 @@ function init() {
 		
 		if(intersects.length > 0) {
 			var intersect = intersects[0].object;
-			
-			
 			intersect.material.color = new THREE.Color(RED);
 		}
-		
 		renderer.render(scene, camera);
 	}
 	
@@ -159,5 +165,20 @@ function init() {
 		controls.staticMoving = true;
 		controls.dynamicDampingFactor = 0.3;
 	}
+}
 
+function setPlane(plane) {
+	switch (plane) {
+	case "x" :
+		selectedPlane = planeX;
+		break;
+	case "y" :
+		selectedPlane = planeY;
+		break;
+	case "z" :
+		selectedPlane = planeZ;
+		break;
+	default:
+		selectedPlane = planeX;
+	}
 }

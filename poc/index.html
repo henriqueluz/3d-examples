@@ -7,8 +7,10 @@
 <body onload="init()">
 	<div id="container" style="width: 1200px; height: 720px;"></div>
 	<div class="label">
-		<b>X: </b><div id="coordX"></div>
-		<b>Y: </b><div id="coordY"></div>
+		Move<br />
+		<button id="planeX" onclick="setPlane('x')">Plane X</button>
+		<button id="planeY" onclick="setPlane('y')">Plane Y</button>
+		<button id="planeZ" onclick="setPlane('z')">Plane Z</button>
 	</div>
 	
 	<script type="text/javascript" src="../js/three.min.js"></script>
