@@ -21,22 +21,16 @@ function init() {
 	var light = new THREE.DirectionalLight(WHITE);
 	light.position.set(10, 10, 10);
 	
-	light.castShadow = true;
-	sphere.castShadow = true;
-	cube.castShadow = true;
-	
 	var d = 20;
 	sphere.position.set(-d, 0, 0);
 	cube.position.set(d, 0, 0);
-	
-	plane.receiveShadow = true;
 	
 	scene.add( new THREE.AmbientLight( 0x555555 ) );
 	scene.add(sphere);
 	scene.add(cube);
 	scene.add(light);
 	scene.add(BED);
-	scene.add(plane);
+	scene.add(floor);
 	
 	var axis =  new Axis();
 	axis.build();

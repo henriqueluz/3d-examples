@@ -32,10 +32,19 @@ var bedMesh = new THREE.Mesh(bedGeometry, bedMaterial);
 var BED = new THREE.BoxHelper(bedMesh);
 BED.material.color = BLACK;
 
-var plane = new THREE.Mesh(
+var floor = new THREE.Mesh(
 		new THREE.PlaneBufferGeometry( 100, 100, 8, 8 ),
 		new THREE.MeshBasicMaterial({ color: 0x000000, opacity: 0.25, transparent: true, side: THREE.DoubleSide})
 	);
 var angle = 90*Math.PI/180;
-plane.position.set(0, -50, 0);
-plane.rotation.set(angle, 0, 0);
+floor.position.set(0, -50, 0);
+floor.rotation.set(angle, 0, 0);
+
+
+
+var planeX = new THREE.Mesh(
+		new THREE.PlaneBufferGeometry( 100, 100, 8, 8 ),
+		new THREE.MeshBasicMaterial({ color: 0x000000, opacity: 0.25, transparent: true, side: THREE.DoubleSide})
+	);
+planeX.rotation.set(0, 0, angle);
+planeX.visible = false;

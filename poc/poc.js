@@ -31,7 +31,8 @@ function init() {
 	scene.add(cube);
 	scene.add(light);
 	scene.add(BED);
-	scene.add(plane);
+	scene.add(floor);
+	scene.add(planeX);
 	
 	var axis =  new Axis();
 	axis.build();
@@ -40,8 +41,8 @@ function init() {
 	var raycaster = new THREE.Raycaster();
 	
 	renderer.domElement.addEventListener('mousemove', onMouseMove, false);
-	//renderer.domElement.addEventListener('mousedown', onMouseDown, false);
-	//renderer.domElement.addEventListener('mouseup', onMouseUp, false);
+	renderer.domElement.addEventListener('mousedown', onMouseDown, false);
+	renderer.domElement.addEventListener('mouseup', onMouseUp, false);
 	window.addEventListener( 'resize', onWindowResize, false);
 	
 	camera.position.set(100, 100, 150);
@@ -59,10 +60,34 @@ function init() {
 		coordY.innerHTML = mouse.y;
 		
 		if(selected) {
-			var intersects = raycaster.intersectObject( plane );
-			var object = intersects[ 0 ];
-			selected.position.copy(object.point.sub(offset));
+			var intersects = raycaster.intersectObject(planeX);
+			var object = intersects[0];
+			selected.position.copy(object.point);
 			return;
+		}
+		
+		var intersects = raycaster.intersectObjects(objects);
+		if (intersects.length > 0) {
+			if (intersected != intersects[ 0 ].object ) {
+
+				if (intersected) {
+					intersected.material.color.setHex(intersected.currentHex);
+				}
+				intersected = intersects[0].object;
+				intersected.currentHex = intersected.material.color.getHex();
+
+				//planeX.position.copy(intersected.position);
+				//planeX.lookAt(camera.position);
+			}
+			container.style.cursor = 'pointer';
+
+		} else {
+
+			if(intersected) {
+				intersected.material.color.setHex(intersected.currentHex);
+			}
+			intersected = null;
+			container.style.cursor = 'auto';
 		}
 	}
 	
@@ -77,8 +102,8 @@ function init() {
 			controls.enabled = false;
 			selected = intersects[0].object;
 
-			var intersects = raycaster.intersectObject(plane);
-			offset.copy(intersects[0].point).sub(plane.position);
+			var intersects = raycaster.intersectObject(planeX);
+			offset.copy(intersects[0].point).sub(planeX.position);
 
 			container.style.cursor = 'move';
 		}
@@ -89,7 +114,7 @@ function init() {
 		controls.enabled = true;
 
 		if (intersected) {
-			plane.position.copy(intersected.position);
+			//planeX.position.copy(intersected.position);
 			selected = null;
 		}
 		container.style.cursor = 'auto';
