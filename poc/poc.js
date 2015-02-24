@@ -1,3 +1,4 @@
+var sphere;
 function init() {
 	var containerWidth = container.clientWidth;
 	var containerHeight = container.clientHeight;
@@ -16,20 +17,14 @@ function init() {
 	var sphereGeometry = new THREE.SphereGeometry(5, 32, 32);
 	var sphereColor = 0x00aaff;
 	var sphereMaterial = new THREE.MeshLambertMaterial({color : sphereColor});
-	var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+	sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 	
 	var light = new THREE.DirectionalLight(WHITE);
 	light.position.set(10, 10, 10);
 	
-	light.castShadow = true;
-	sphere.castShadow = true;
-	cube.castShadow = true;
-	
 	var d = 20;
 	sphere.position.set(-d, 0, 0);
 	cube.position.set(d, 0, 0);
-	
-	plane.receiveShadow = true;
 	
 	scene.add( new THREE.AmbientLight( 0x555555 ) );
 	scene.add(sphere);
@@ -45,7 +40,9 @@ function init() {
 	var raycaster = new THREE.Raycaster();
 	
 	renderer.domElement.addEventListener('mousemove', onMouseMove, false);
-	renderer.domElement.addEventListener('resize', onWindowResize, false);
+	//renderer.domElement.addEventListener('mousedown', onMouseDown, false);
+	//renderer.domElement.addEventListener('mouseup', onMouseUp, false);
+	window.addEventListener( 'resize', onWindowResize, false);
 	
 	camera.position.set(100, 100, 150);
 	animate();
@@ -69,10 +66,39 @@ function init() {
 		}
 	}
 	
+	function onMouseDown(e) {
+		e.preventDefault();
+		var vector = new THREE.Vector3(mouse.x, mouse.y, 0.0).unproject(camera);
+		var raycaster = new THREE.Raycaster( camera.position, vector.sub(camera.position).normalize() );
+		var intersects = raycaster.intersectObjects( objects );
+
+		if (intersects.length > 0) {
+
+			controls.enabled = false;
+			selected = intersects[0].object;
+
+			var intersects = raycaster.intersectObject(plane);
+			offset.copy(intersects[0].point).sub(plane.position);
+
+			container.style.cursor = 'move';
+		}
+	}
+
+	function onMouseUp(e) {
+		e.preventDefault();
+		controls.enabled = true;
+
+		if (intersected) {
+			plane.position.copy(intersected.position);
+			selected = null;
+		}
+		container.style.cursor = 'auto';
+	}
+	
 	function onWindowResize( e ) {
 		containerWidth = container.clientWidth;
 		containerHeight = container.clientHeight;
-		renderer.setSize(containerWidth, containerHeight);
+		renderer.setSize( containerWidth, containerHeight );
 		camera.aspect = containerWidth / containerHeight;
 		camera.updateProjectionMatrix();
 	}
@@ -88,8 +114,11 @@ function init() {
 		
 		if(intersects.length > 0) {
 			var intersect = intersects[0].object;
+			
+			
 			intersect.material.color = new THREE.Color(RED);
 		}
+		
 		renderer.render(scene, camera);
 	}
 	
