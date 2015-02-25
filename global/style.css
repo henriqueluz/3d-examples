@@ -3,12 +3,13 @@
 	font-size: 16px;
 	font-weight: bold;
 	position: absolute;
-	z-index: 100;
+	z-index: 1;
 	top: 10px;
 	right: 10px;
 	text-shadow: #000 1px 1px 1px;
 	background-color: rgba(0, 0, 0, 0.85);
 	padding: 1em;
+	width: 220px;
 }
 
 #control {
@@ -18,7 +19,15 @@
 	bottom: 600px;
 }
 
-input {
+#objectsList {
+	top: 100px !important;
+}
+
+#rotation {
+	top: 200px;
+}
+
+select {
 	width: 100px;
 }
 

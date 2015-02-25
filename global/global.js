@@ -20,7 +20,9 @@ var LIGHT_YELLOW = 0xeeeedd;
 var selectedPlane;
 var intersected;
 var selected;
+var rotateObject;
 var offset = new THREE.Vector3();
+var ANGLE = 15 * Math.PI/180;
 
 var coordX = document.getElementById("coordX");
 var coordY = document.getElementById("coordY");

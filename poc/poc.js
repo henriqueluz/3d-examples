@@ -6,18 +6,20 @@ function init() {
 	container.appendChild(renderer.domElement);
 	renderer.setClearColor(LIGHT_YELLOW);
 	
-	var controls = new THREE.TrackballControls(camera);
+	var controls = new THREE.TrackballControls(camera, container);
 	setupControls(controls);
 	
 	var cubeGeometry = new THREE.BoxGeometry(10, 10, 10);
 	var cubeColor = 0xffdd00;
 	var cubeMaterial = new THREE.MeshLambertMaterial({color: YELLOW});
 	var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+	cube.name = "cube";
 	
 	var sphereGeometry = new THREE.SphereGeometry(5, 32, 32);
 	var sphereColor = 0x00aaff;
 	var sphereMaterial = new THREE.MeshLambertMaterial({color : sphereColor});
 	sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+	sphere.name = "sphere";
 	
 	var light = new THREE.DirectionalLight(WHITE);
 	light.position.set(10, 10, 10);
@@ -45,6 +47,7 @@ function init() {
 	renderer.domElement.addEventListener('mousemove', onMouseMove, false);
 	renderer.domElement.addEventListener('mousedown', onMouseDown, false);
 	renderer.domElement.addEventListener('mouseup', onMouseUp, false);
+	//renderer.domElement.addEventListener('click', onClick, false);
 	window.addEventListener( 'resize', onWindowResize, false);
 	
 	camera.position.set(100, 100, 150);
@@ -90,7 +93,7 @@ function init() {
 		e.preventDefault();
 		var vector = new THREE.Vector3(mouse.x, mouse.y, 0.0).unproject(camera);
 		var raycaster = new THREE.Raycaster( camera.position, vector.sub(camera.position).normalize() );
-		var intersects = raycaster.intersectObjects( objects );
+		var intersects = raycaster.intersectObjects(objects);
 
 		if (intersects.length > 0) {
 			controls.enabled = false;
@@ -129,6 +132,19 @@ function init() {
 		container.style.cursor = 'auto';
 	}
 	
+	function onClick(e) {
+		var intersects = raycaster.intersectObjects(objects);
+
+		if(!selected) {
+			if(intersects.length > 0) {
+				controls.enabled = false;
+				selected = intersects[0].object;
+			}
+		} else {
+			selected = null;
+		}
+	}
+	
 	function onWindowResize( e ) {
 		containerWidth = container.clientWidth;
 		containerHeight = container.clientHeight;
@@ -165,6 +181,42 @@ function init() {
 		controls.staticMoving = true;
 		controls.dynamicDampingFactor = 0.3;
 	}
+	
+	$("#objects").change(function() {
+		var selectedId = this.value;
+		for (var i in objects) {
+			var object = objects[i];
+			if(object.name == selectedId) {
+				rotateObject = object;
+			}
+		}
+	});
+	
+	
+}
+
+function rotate(axis, angle) {
+	if(!angle) angle = ANGLE;
+	if(rotateObject) {
+		switch (axis) {
+		case "x":
+			rotateObject.rotation.x += angle;
+			break;
+		case "y":
+			rotateObject.rotation.y += angle;
+			break;
+		case "z":
+			rotateObject.rotation.z += angle;
+			break;
+		default:
+			rotateObject.rotation.x += angle;
+			break;
+		}
+	}
+}
+
+function undoRotate(axis) {
+	 rotate(axis, -ANGLE);
 }
 
 function setPlane(plane) {

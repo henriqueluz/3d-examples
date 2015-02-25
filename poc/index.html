@@ -6,13 +6,44 @@
 
 <body onload="init()">
 	<div id="container" style="width: 1200px; height: 720px;"></div>
-	<div class="label">
+	<div class="label" id="move">
 		Move<br />
-		<button id="planeX" onclick="setPlane('x')">Plane X</button>
-		<button id="planeY" onclick="setPlane('y')">Plane Y</button>
-		<button id="planeZ" onclick="setPlane('z')">Plane Z</button>
+		<button id="planeX" onclick="setPlane('x')">Plane XZ</button>
+		<button id="planeY" onclick="setPlane('y')">Plane ZY</button>
+		<button id="planeZ" onclick="setPlane('z')">Plane XY</button>
 	</div>
 	
+	<div id="objectsList" class="label">
+		<div>
+			Objects <br />
+			<select id="objects">
+				<option value="">Select</option>
+				<option value="cube">Cube</option>
+				<option value="sphere">Sphere</option>
+			</select>
+		</div>
+	</div>
+	
+	<div id="rotation" class="label">
+		Rotate
+		<div>
+			X:
+			<button onclick="undoRotate('x')">-</button> 
+			<button onclick="rotate('x')">+</button>
+		</div>
+		<div>
+			Y:
+			<button onclick="undoRotate('y')">-</button> 
+			<button onclick="rotate('y')">+</button>
+		</div>
+		<div>
+			Z:
+			<button onclick="undoRotate('z')">-</button> 
+			<button onclick="rotate('z')">+</button>
+		</div>
+	</div>
+	
+	<script type="text/javascript" src="../js/jquery-2.1.3.min.js"></script>
 	<script type="text/javascript" src="../js/three.min.js"></script>
 	<script type="text/javascript" src="../js/TrackballControls.js"></script>
 	<script type="text/javascript" src="../global/global.js"></script>
